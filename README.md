@@ -37,7 +37,7 @@
 
     原因：没有选择文件，或选择文件、输入数据错误。
 
-2. =='Worksheet Sheet1 does not exist.'==      **常见**
+2. <font color='red'>'Worksheet Sheet1 does not exist.'</font>      **常见**
 
     原因：选择的文件中的工作簿名称不是`Sheet1`，需要动手修改。
 
