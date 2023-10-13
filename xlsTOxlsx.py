@@ -18,8 +18,8 @@ def reverse_file(fileName):
         # 关闭工作簿
         wb.Close()  #
 
-    except:
-        print("error")
+    except Exception as r:
+        print(f"error: {r}")
     finally:
         # 退出excel,不退出则会被占用
         # wb.Close()  #
