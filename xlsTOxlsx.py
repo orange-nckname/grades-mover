@@ -3,6 +3,9 @@ import os
 
 def reverse_file(fileName):
     global excel, wb
+    
+    if fileName[-1] == "x":
+        return fileName
     try:
         fname = fileName
         fname = os.path.normpath(fname)
