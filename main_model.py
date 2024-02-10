@@ -8,8 +8,7 @@ Task:
 [ ] 美化界面
 """
 
-VERSION = 0.9
-
+VERSION = 1.0
 
 # from tkinter import *
 from tkinter import filedialog
