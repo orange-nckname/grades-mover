@@ -1,48 +1,30 @@
-程序使用说明
-
-## 程序功能
-
-该程序可以将一个 Excel 文档中的学生成绩**按学号内容匹配转存至另一表格**，允许多出 or 缺少某个同学。
+# Grades-Mover App
+[TOC]
+## 功能：
+选择两个Excel文件，将一个中的数据内容根据指定列对应到另外一个文件中。  
+支持.xls、.xlsx。
 
 ## 使用方法：
+程序组成：  
++ 源代码：
+```
+grades-mover
+|---main.py         # 主程序
+|---main_model.py   # 处理主程序
+|---xlsTOxlsx.py    # 将.xls转换为.xlsx
+```
++ 打包后程序：
+```
+grades-mover
+|---main.exe        # 主程序
+|---excel.ico       # 图标文件
+```
+依赖库文件：
++ openpyxl
 
-1. 需要安装 Python 环境；
+使用方法：
+双击运行main.exe文件。
+![content](https://api.onedrive.com/v1.0/shares/s!Ar8BtB6LV-uigV9P88A5Vl8sCWA9/root/content)
 
-2. 在该目录下的终端输入`pip install -r requirements.txt`命令以安装依赖库；
-
-3. 运行`main.py`文件。
-
-    ![16887311471841688731146358.png](https://fastly.jsdelivr.net/gh/orange-nckname/pictures@main/16887311471841688731146358.png)
-
-    | 控件                         | 意义                                                         |
-    | ---------------------------- | ------------------------------------------------------------ |
-    | 选择带有成绩的表格           | 选择有成绩的表格，格式为**.xls**                             |
-    | 选择空表                     | 选择没有成绩、有学号的表格，格式为**.xls**                   |
-    | 输入带有成绩的表格里的学号列 | 输入你刚刚选择的**第一个表格**（有成绩的那个）其中**学号**在excel表中的列号，如`B` |
-    | 输入带有成绩的表格的分数列   | 输入你刚刚选择的**第一个表格**（有成绩那个）其中**分数**在excel表中的列号，如`E` |
-    | 输入空表的学号列             | 输入你刚刚选择的**第二个表格**（没成绩那个）其中**学号**在excel表中的列号，如`A` |
-    | 输入空表的成绩列             | 输入你刚刚选择的**第二个表格**（没成绩那个）其中**成绩**在excel表中的列号，如`D` |
-
-    点击确定，弹出成功窗口，找到在**空表根目录下生成的`output.xlsx`**，即为填写完成后的空表。
-
-
-
-## 错误排除
-
-![16887316561831688731655232.png](https://fastly.jsdelivr.net/gh/orange-nckname/pictures@main/16887316561831688731655232.png)
-
-精准错误信息：见“错误原因”后英文。
-
-1. ord() expected a character,but string of length 0 found
-
-    原因：没有选择文件，或选择文件、输入数据错误。
-
-2. <font color='red'>'Worksheet Sheet1 does not exist.'</font>      **常见**
-
-    原因：选择的文件中的工作簿名称不是`Sheet1`，需要动手修改。
-
-    
-
-    ![16887319311831688731931137.png](https://fastly.jsdelivr.net/gh/orange-nckname/pictures@main/16887319311831688731931137.png)
-
-3. 其他问题。
+根据界面选择两个文件、填入相应内容后点击确定。  
+在当前目录下生成output.xlsx和status.txt，分别对应生成的excel文件和生成过程中遇到的问题（例如无法录入、不存在等）并自动打开。
