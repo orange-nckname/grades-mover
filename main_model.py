@@ -8,6 +8,9 @@ Task:
 [ ] 美化界面
 """
 
+VERSION = 0.9
+
+
 # from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
@@ -24,6 +27,8 @@ import re
 import shutil
 import os
 import builtins
+import check_update
+import webbrowser
 
 style = Style(theme="sandstone")
 root = style.master
@@ -42,6 +47,7 @@ empty_file_first_row = 0
 score_file_first_row = 0
 
 
+
 # def find_dir(fp):
 #     result = ""
 #     ptr = 0
@@ -49,6 +55,15 @@ score_file_first_row = 0
 #         if fp[index] == "\\"
 
 
+def check_update_func():
+    latest_version = check_update.get_latest_version()
+    if VERSION < latest_version:
+        answer = messagebox.askquestion(title="有新的版本等待升级！", message=f"最新版本：{latest_version}。是否下载？")
+        if answer:
+            webbrowser.open("https://orange-nckname.github.io/grades-mover")
+
+
+check_update_func()
 
 def chose_file():
     global file_place
