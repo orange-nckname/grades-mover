@@ -8,7 +8,7 @@ Task:
 [ ] 美化界面
 """
 
-VERSION = 1.0
+VERSION = 1.1
 
 # from tkinter import *
 from tkinter import filedialog
@@ -132,7 +132,7 @@ def selete_first_row():
             break
         score_file_first_row += 1
     
-    print(f"score_file_first_row: {score_file_first_row}, empty_file_first_row: {empty_file_first_row}")
+    # print(f"score_file_first_row: {score_file_first_row}, empty_file_first_row: {empty_file_first_row}")
 
 
 
@@ -144,19 +144,20 @@ student_file_name.set("未选择文件！")
 
 # Label(root, text="选择数据来源文件夹：").grid(row=0)
 # Button(root, text="选择文件夹", command=chose_folder).grid(row=0, column=2)
-ttk.Label(root, text="选择带有成绩的表格：").grid(row=2, pady=6, padx=40)
+ttk.Label(root, text="选择原始成绩表：").grid(row=2, pady=6, padx=40)
 ttk.Label(root, textvariable=student_file_name).grid(row=2, column=2)
 ttk.Button(root, text="选择文件", command=chose_file, style="info.TButton").grid(row=2, column=3, pady=6)
-ttk.Label(root, text="选择空表：").grid(row=4, pady=10)
+ttk.Label(root, text="选择标准成绩表：").grid(row=4, pady=10)
 ttk.Label(root, textvariable=empty_file_name).grid(row=4, column=2)
 ttk.Button(root, text="选择文件", command=chose_empty_file, style="info.TButton").grid(row=4, column=3, pady=6)
 
-ttk.Label(root, text="输入带有成绩的表格里的的学号列\n（大写字母）：").grid(row=6, column=0, pady=6)
-ttk.Label(root, text="输入带有成绩的表格的分数列\n（大写字母）：").grid(row=8, column=0, pady=6)
-ttk.Label(root, text="输入空表的学号列\n（大写字母）：").grid(row=10, column=0, pady=6)
-ttk.Label(root, text="输入空表的成绩列\n（大写字母）：").grid(row=12, column=0, pady=6)
-
+ttk.Label(root, text="输入 原始成绩表 的 学号 列\n（大写字母）：").grid(row=6, column=0, pady=6)
+ttk.Label(root, text="输入 原始成绩表 的 成绩 列\n（大写字母）：").grid(row=8, column=0, pady=6)
+ttk.Label(root, text="输入 标准成绩表 的 学号 列\n（大写字母）：").grid(row=10, column=0, pady=6)
+ttk.Label(root, text="输入 标准成绩表 的 成绩 列\n（大写字母）：").grid(row=12, column=0, pady=6)
 ttk.Label(root).grid(row=2, column=4, padx=10)
+ttk.Label(root, text="保存的文件名字：").grid(row=14, column=0, pady=6)
+
 
 student_col_char = StringVar()
 student_col = IntVar()
@@ -166,6 +167,7 @@ empty_student_col_char = StringVar()
 empty_student_col = IntVar()
 empty_score_col_char = StringVar()
 empty_score_col = IntVar()
+save_file_name = StringVar()
 
 # 默认值
 empty_student_col_char.set("A")
@@ -175,11 +177,13 @@ entry1 = ttk.Entry(root, textvariable=student_col_char)
 entry2 = ttk.Entry(root, textvariable=score_col_char)
 entry3 = ttk.Entry(root, textvariable=empty_student_col_char)
 entry4 = ttk.Entry(root, textvariable=empty_score_col_char)
+entry5 = ttk.Entry(root, textvariable=save_file_name)
 
 entry1.grid(row=6, column=3, padx=10, pady=5)
 entry2.grid(row=8, column=3, padx=10, pady=5)
 entry3.grid(row=10, column=3, padx=10, pady=5)
 entry4.grid(row=12, column=3, padx=10, pady=5)
+entry5.grid(row=14, column=3, padx=10, pady=5)
 
 
 def show():
@@ -189,10 +193,10 @@ def show():
 
 
 ttk.Button(root, text="确定", width=10, command=show, style="success.TButton") \
-    .grid(row=14, column=0, sticky=tk.W, padx=50, pady=5)
+    .grid(row=16, column=0, sticky=tk.W, padx=50, pady=5)
 
 ttk.Button(root, text="取消", width=10, command=sys.exit, style="secondary.TButton") \
-    .grid(row=14, column=3, sticky=tk.E, padx=10, pady=5)
+    .grid(row=16, column=3, sticky=tk.E, padx=10, pady=5)
 
 root.mainloop()
 
@@ -268,8 +272,8 @@ for student in keys:
             no_score_list.append(student)
             empty_student_list[ind] = "None"
 
-shutil.copy(empty_file_place, folder_place + "/output.xlsx")
-empty_workbook.save(f"{folder_place}/output.xlsx")
+shutil.copy(empty_file_place, folder_place + "/" + save_file_name.get() + ".xlsx")
+empty_workbook.save(f"{folder_place}/{save_file_name.get()}.xlsx")
 
 if not is_empty_file_xlsx:
     os.remove(empty_file_place)
@@ -283,29 +287,29 @@ window.withdraw()  # 退出默认 tk 窗口
 showinfo_text = "成功！"
 # 成绩表多人
 if (len(score_more_list) > 0):
-    showinfo_text += f"\n\n警告：学号为 {score_more_list} 的成绩无法录入到空白表格。"
+    showinfo_text += f"\n\n警告：学号 {score_more_list} 在标准成绩表里 不存在。"
 
 # 空白表多人
 for each in empty_student_list:
-    if each != "None":
+    if each != "None" and each not in no_score_list:
         empty_more_list.append(each)
 if (len(empty_more_list) > 0):
-    showinfo_text += f"\n\n警告：学号为 {empty_more_list} 的人不存在。"
+    showinfo_text += f"\n\n警告：学号 {empty_more_list} 在原始成绩表里 不存在。"
 
 # 成绩为空
 if (len(no_score_list) > 0):
-    showinfo_text += f"\n\n警告：学号为 {no_score_list} 的人无成绩。"
+    showinfo_text += f"\n\n警告：学号 {no_score_list} 在原始成绩表中的 成绩是空着的。"
 
 # print(empty_student_list)
 
 # 写入/展示警告内容
-with builtins.open(f"{folder_place}/status.txt", "w") as f:
+with builtins.open(f"{folder_place}/status.txt", "w", encoding="utf-8") as f:
     f.write(showinfo_text)
 
 messagebox.showinfo('Successful!', showinfo_text)
 
 # 打开文件位置
 os.startfile(rf"{folder_place}/status.txt")
-os.startfile(rf"{folder_place}/output.xlsx")
+os.startfile(rf"{folder_place}/{save_file_name.get()}.xlsx")
 sys.exit()
 # ------------------------------------------------------------------------ #
